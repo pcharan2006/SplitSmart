@@ -1,0 +1,74 @@
+# The whole app in containers: MySQL + API + website (nginx).
+#
+#   docker compose -f docker-compose.prod.yml --env-file .env.production up -d --build
+#
+# Copy .env.production.example to .env.production and fill it in first. Compose refuses to start if a
+# required secret is missing (the ":?" below), so you can't accidentally run with blank passwords.
+name: splitsmart
+
+services:
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Set DB_ROOT_PASSWORD in .env.production}
+      MYSQL_DATABASE: expense_splitter
+      # The API connects as this limited user (it can only touch this one database), never as root.
+      MYSQL_USER: splitsmart
+      MYSQL_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env.production}
+    volumes:
+      - db_data:/var/lib/mysql
+      # Runs only the first time, on an empty volume: creates all the tables.
+      - ./backend/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    # No "ports:" on purpose: the database is reachable only by the other containers, not from the internet.
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USER: splitsmart
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: expense_splitter
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in .env.production (32+ random characters)}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      CLIENT_URL: ${CLIENT_URL:?Set CLIENT_URL in .env.production (the public address of your site)}
+      # How many proxies sit in front of the API: 1 = just nginx. Use 2 if you also put an HTTPS proxy
+      # (Caddy, a cloud load balancer ...) in front of nginx. Wrong values break per-visitor rate limits.
+      TRUST_PROXY: ${TRUST_PROXY:-1}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      EMAIL_FROM: ${EMAIL_FROM:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+    volumes:
+      - uploads:/app/uploads
+    # No "ports:" either: only nginx talks to the API.
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ""   # empty = same domain; nginx forwards /api to the backend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "${WEB_PORT:-8080}:80"
+
+volumes:
+  db_data:
+  uploads:

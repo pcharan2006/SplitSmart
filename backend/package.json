@@ -1,0 +1,34 @@
+{
+  "name": "expense-splitter-backend",
+  "version": "1.0.0",
+  "description": "REST API for the AI-Powered Smart Expense Splitter",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "jest --runInBand",
+    "test:coverage": "jest --runInBand --coverage",
+    "test:api": "npx -y newman run postman/ExpenseSplitter.postman_collection.json -e postman/ExpenseSplitter.local.postman_environment.json",
+    "postman:build": "node postman/generate.js",
+    "db:init": "node scripts/init-db.js"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "express-rate-limit": "^8.7.5",
+    "express-validator": "^7.3.2",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.5.0",
+    "mysql2": "^3.24.6",
+    "nodemailer": "^10.6.1",
+    "openai": "^7.60.0"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2",
+    "supertest": "^7.3.2"
+  }
+}

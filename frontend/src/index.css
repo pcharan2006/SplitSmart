@@ -1,0 +1,388 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ============================================================
+   SplitSmart design system: "Forest & Marigold"
+   Warm sand surfaces, deep forest green, marigold accents, clay for warnings.
+   The brand colours REPLACE Tailwind's indigo / violet / fuchsia / sky / cyan / rose / pink,
+   so every existing class (text-indigo-600, bg-violet-50 ...) now shows the new palette.
+   ============================================================ */
+
+@theme {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* "white" is a warm cream: there is no stark white anywhere */
+  --color-white: #fffcf3;
+
+  --color-indigo-50: #eaf5ef;
+  --color-indigo-100: #cfe9db;
+  --color-indigo-200: #a2d3ba;
+  --color-indigo-300: #6fb894;
+  --color-indigo-400: #3f9b73;
+  --color-indigo-500: #1f7f5a;
+  --color-indigo-600: #166a4a;
+  --color-indigo-700: #0f5440;
+  --color-indigo-800: #0c4333;
+  --color-indigo-900: #093528;
+  --color-indigo-950: #04201a;
+  --color-violet-50: #e9f8f1;
+  --color-violet-100: #c8efdf;
+  --color-violet-200: #96e0c3;
+  --color-violet-300: #5fcba4;
+  --color-violet-400: #2fb286;
+  --color-violet-500: #1a9a70;
+  --color-violet-600: #137c5a;
+  --color-violet-700: #0f6248;
+  --color-violet-800: #0d4d3a;
+  --color-violet-900: #0a3d2e;
+  --color-violet-950: #05241b;
+  --color-fuchsia-50: #fff8e6;
+  --color-fuchsia-100: #ffecbd;
+  --color-fuchsia-200: #ffdb86;
+  --color-fuchsia-300: #ffc94d;
+  --color-fuchsia-400: #f7b32b;
+  --color-fuchsia-500: #eba00f;
+  --color-fuchsia-600: #c98007;
+  --color-fuchsia-700: #a05f09;
+  --color-fuchsia-800: #824b0e;
+  --color-fuchsia-900: #6c3f10;
+  --color-fuchsia-950: #3e2007;
+  --color-sky-50: #f3f6e6;
+  --color-sky-100: #e4ebc3;
+  --color-sky-200: #cdd990;
+  --color-sky-300: #b1c25c;
+  --color-sky-400: #97ab38;
+  --color-sky-500: #7d9024;
+  --color-sky-600: #627219;
+  --color-sky-700: #4c5817;
+  --color-sky-800: #3d4616;
+  --color-sky-900: #343b16;
+  --color-sky-950: #1b1f08;
+  --color-cyan-50: #fbf1e8;
+  --color-cyan-100: #f5dcc3;
+  --color-cyan-200: #ecbc8f;
+  --color-cyan-300: #e09a5d;
+  --color-cyan-400: #d27b36;
+  --color-cyan-500: #b8621f;
+  --color-cyan-600: #964d19;
+  --color-cyan-700: #783d18;
+  --color-cyan-800: #613317;
+  --color-cyan-900: #512c16;
+  --color-cyan-950: #2c1608;
+  --color-rose-50: #fdf0ec;
+  --color-rose-100: #fadcd3;
+  --color-rose-200: #f4b9a8;
+  --color-rose-300: #ea9078;
+  --color-rose-400: #dd6c4f;
+  --color-rose-500: #c9502f;
+  --color-rose-600: #ad3f23;
+  --color-rose-700: #8b321d;
+  --color-rose-800: #702b1c;
+  --color-rose-900: #5d271b;
+  --color-rose-950: #33120b;
+  --color-pink-50: #fdeff3;
+  --color-pink-100: #fbd9e3;
+  --color-pink-200: #f6b3c8;
+  --color-pink-300: #ee86a7;
+  --color-pink-400: #e05883;
+  --color-pink-500: #c93a66;
+  --color-pink-600: #a82c53;
+  --color-pink-700: #862445;
+  --color-pink-800: #6e203b;
+  --color-pink-900: #5c1e35;
+  --color-pink-950: #330d1c;
+  --color-slate-50: #f6f1e4;
+  --color-slate-100: #ece5d3;
+  --color-slate-200: #ddd5bf;
+  --color-slate-300: #c3bda5;
+  --color-slate-400: #8f9a8c;
+  --color-slate-500: #5d6e63;
+  --color-slate-600: #485a50;
+  --color-slate-700: #34453b;
+  --color-slate-800: #22312a;
+  --color-slate-900: #14211b;
+  --color-slate-950: #0b1511;
+
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-fade-in: fade-in 0.5s ease-out both;
+  --animate-pop: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-float-slow: float 11s ease-in-out infinite reverse;
+  --animate-drift: drift 18s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.6s linear infinite;
+  --animate-marquee: marquee 38s linear infinite;
+
+  @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: none; } }
+  @keyframes float { 0%, 100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-14px) rotate(var(--r, 0deg)); } }
+  @keyframes drift { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(40px, -30px) scale(1.08); } 66% { transform: translate(-30px, 30px) scale(0.95); } }
+  @keyframes shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+}
+
+/* Brand colours as plain numbers so shadows and glows everywhere can reuse them: rgb(var(--brand-rgb) / 0.3) */
+:root {
+  --brand-rgb: 22 122 92;
+  --accent-rgb: 235 160 15;
+}
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body {
+    @apply text-slate-900 antialiased;
+    font-size: 15.5px;
+    background-color: #f3ecdd;
+    background-image:
+      radial-gradient(at 0% 0%, rgb(var(--brand-rgb) / 0.14) 0, transparent 42%),
+      radial-gradient(at 100% 0%, rgb(var(--accent-rgb) / 0.17) 0, transparent 40%),
+      radial-gradient(at 100% 100%, rgb(201 80 47 / 0.08) 0, transparent 45%);
+    background-attachment: fixed;
+  }
+  h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; }
+  ::selection { background: rgb(var(--accent-rgb) / 0.35); }
+}
+
+/* ---------- Surfaces ---------- */
+@utility card {
+  @apply rounded-2xl border border-white/80 bg-white/85 backdrop-blur-sm;
+  box-shadow: 0 1px 2px rgb(60 45 10 / 0.05), 0 12px 28px -14px rgb(var(--brand-rgb) / 0.22);
+}
+@utility lift {
+  @apply transition duration-300 ease-out hover:-translate-y-1;
+  &:hover { box-shadow: 0 2px 4px rgb(60 45 10 / 0.06), 0 24px 40px -16px rgb(var(--brand-rgb) / 0.4); }
+}
+@utility spotlight {
+  position: relative;
+  overflow: hidden;
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgb(var(--accent-rgb) / 0.16), transparent 60%);
+  }
+  &:hover::before { opacity: 1; }
+}
+@utility glass {
+  @apply border border-white/60 bg-white/70 backdrop-blur-xl;
+}
+@utility gradient-text {
+  @apply bg-linear-to-r from-indigo-600 via-violet-600 to-fuchsia-600 bg-clip-text text-transparent;
+}
+@utility gradient-brand {
+  @apply bg-linear-to-br from-indigo-500 via-violet-500 to-fuchsia-500;
+}
+
+/* ---------- Buttons ---------- */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition duration-200
+         focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2
+         active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 disabled:active:scale-100;
+}
+@utility btn-primary {
+  @apply btn bg-linear-to-br from-[#0f5b48] via-[#157a5c] to-[#1f9a6f] text-white
+         shadow-[0_8px_20px_-8px_rgb(var(--brand-rgb)/0.8)] hover:-translate-y-0.5 hover:brightness-110
+         hover:shadow-[0_14px_26px_-8px_rgb(var(--brand-rgb)/0.85)];
+}
+@utility btn-secondary {
+  @apply btn border border-slate-200 bg-white/80 text-slate-700 shadow-sm hover:-translate-y-0.5 hover:border-violet-300 hover:bg-white hover:text-violet-700;
+}
+@utility btn-danger {
+  @apply btn bg-linear-to-br from-[#c9502f] to-[#a82c53] text-white shadow-[0_8px_20px_-8px_rgb(201_80_47/0.7)] hover:-translate-y-0.5 hover:brightness-110;
+}
+
+/* ---------- Forms ---------- */
+@utility label {
+  @apply mb-1.5 block text-sm font-semibold text-slate-700;
+}
+@utility input {
+  @apply block w-full rounded-xl border border-slate-300 bg-white/90 px-3.5 py-2.5 text-sm text-slate-900 shadow-sm
+         placeholder:text-slate-400 transition duration-200 hover:border-slate-400
+         focus:border-violet-600 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/20;
+}
+
+/* ---------- Loading skeleton ---------- */
+@utility skeleton {
+  @apply rounded-xl;
+  background: linear-gradient(100deg, #e8e0cb 30%, #f6f0e1 50%, #e8e0cb 70%);
+  background-size: 300% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+* { scrollbar-width: thin; scrollbar-color: #c3bda5 transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================
+   DARK MODE  (the "dark" class on <html>, set by ThemeContext)
+   The palette itself is remapped: neutrals flip light<->dark and each colour
+   gets a deep translucent background (50-200) plus a lighter text shade (600-900).
+   ============================================================ */
+.dark {
+  color-scheme: dark;
+  --brand-rgb: 47 178 134;
+  --accent-rgb: 247 179 43;
+
+  --color-slate-50: #0f1a15;
+  --color-slate-100: #15231d;
+  --color-slate-200: #20332a;
+  --color-slate-300: #2f4a3c;
+  --color-slate-400: #6f8a7a;
+  --color-slate-500: #8fa89a;
+  --color-slate-600: #aebfb4;
+  --color-slate-700: #c7d4cb;
+  --color-slate-800: #dde6df;
+  --color-slate-900: #eef3ee;
+  --color-indigo-50: color-mix(in oklab, #1f7f5a 13%, #0a1310);
+  --color-indigo-100: color-mix(in oklab, #1f7f5a 21%, #0a1310);
+  --color-indigo-200: color-mix(in oklab, #1f7f5a 32%, #0a1310);
+  --color-indigo-600: #3f9b73;
+  --color-indigo-700: #6fb894;
+  --color-indigo-800: #a2d3ba;
+  --color-indigo-900: #cfe9db;
+  --color-violet-50: color-mix(in oklab, #1a9a70 13%, #0a1310);
+  --color-violet-100: color-mix(in oklab, #1a9a70 21%, #0a1310);
+  --color-violet-200: color-mix(in oklab, #1a9a70 32%, #0a1310);
+  --color-violet-600: #2fb286;
+  --color-violet-700: #5fcba4;
+  --color-violet-800: #96e0c3;
+  --color-violet-900: #c8efdf;
+  --color-fuchsia-50: color-mix(in oklab, #eba00f 13%, #0a1310);
+  --color-fuchsia-100: color-mix(in oklab, #eba00f 21%, #0a1310);
+  --color-fuchsia-200: color-mix(in oklab, #eba00f 32%, #0a1310);
+  --color-fuchsia-600: #f7b32b;
+  --color-fuchsia-700: #ffc94d;
+  --color-fuchsia-800: #ffdb86;
+  --color-fuchsia-900: #ffecbd;
+  --color-sky-50: color-mix(in oklab, #7d9024 13%, #0a1310);
+  --color-sky-100: color-mix(in oklab, #7d9024 21%, #0a1310);
+  --color-sky-200: color-mix(in oklab, #7d9024 32%, #0a1310);
+  --color-sky-600: #97ab38;
+  --color-sky-700: #b1c25c;
+  --color-sky-800: #cdd990;
+  --color-sky-900: #e4ebc3;
+  --color-cyan-50: color-mix(in oklab, #b8621f 13%, #0a1310);
+  --color-cyan-100: color-mix(in oklab, #b8621f 21%, #0a1310);
+  --color-cyan-200: color-mix(in oklab, #b8621f 32%, #0a1310);
+  --color-cyan-600: #d27b36;
+  --color-cyan-700: #e09a5d;
+  --color-cyan-800: #ecbc8f;
+  --color-cyan-900: #f5dcc3;
+  --color-rose-50: color-mix(in oklab, #c9502f 13%, #0a1310);
+  --color-rose-100: color-mix(in oklab, #c9502f 21%, #0a1310);
+  --color-rose-200: color-mix(in oklab, #c9502f 32%, #0a1310);
+  --color-rose-600: #dd6c4f;
+  --color-rose-700: #ea9078;
+  --color-rose-800: #f4b9a8;
+  --color-rose-900: #fadcd3;
+  --color-pink-50: color-mix(in oklab, #c93a66 13%, #0a1310);
+  --color-pink-100: color-mix(in oklab, #c93a66 21%, #0a1310);
+  --color-pink-200: color-mix(in oklab, #c93a66 32%, #0a1310);
+  --color-pink-600: #e05883;
+  --color-pink-700: #ee86a7;
+  --color-pink-800: #f6b3c8;
+  --color-pink-900: #fbd9e3;
+  --color-emerald-50: color-mix(in oklab, #10b981 13%, #0a1310);
+  --color-emerald-100: color-mix(in oklab, #10b981 21%, #0a1310);
+  --color-emerald-200: color-mix(in oklab, #10b981 32%, #0a1310);
+  --color-emerald-600: #34d399;
+  --color-emerald-700: #6ee7b7;
+  --color-emerald-800: #a7f3d0;
+  --color-emerald-900: #d1fae5;
+  --color-amber-50: color-mix(in oklab, #f59e0b 13%, #0a1310);
+  --color-amber-100: color-mix(in oklab, #f59e0b 21%, #0a1310);
+  --color-amber-200: color-mix(in oklab, #f59e0b 32%, #0a1310);
+  --color-amber-600: #fbbf24;
+  --color-amber-700: #fcd34d;
+  --color-amber-800: #fde68a;
+  --color-amber-900: #fef3c7;
+  --color-teal-50: color-mix(in oklab, #14b8a6 13%, #0a1310);
+  --color-teal-100: color-mix(in oklab, #14b8a6 21%, #0a1310);
+  --color-teal-200: color-mix(in oklab, #14b8a6 32%, #0a1310);
+  --color-teal-600: #2dd4bf;
+  --color-teal-700: #5eead4;
+  --color-teal-800: #99f6e4;
+  --color-teal-900: #ccfbf1;
+  --color-lime-50: color-mix(in oklab, #84cc16 13%, #0a1310);
+  --color-lime-100: color-mix(in oklab, #84cc16 21%, #0a1310);
+  --color-lime-200: color-mix(in oklab, #84cc16 32%, #0a1310);
+  --color-lime-600: #a3e635;
+  --color-lime-700: #bef264;
+  --color-lime-800: #d9f99d;
+  --color-lime-900: #ecfccb;
+  --color-orange-50: color-mix(in oklab, #f97316 13%, #0a1310);
+  --color-orange-100: color-mix(in oklab, #f97316 21%, #0a1310);
+  --color-orange-200: color-mix(in oklab, #f97316 32%, #0a1310);
+  --color-orange-600: #fb923c;
+  --color-orange-700: #fdba74;
+  --color-orange-800: #fed7aa;
+  --color-orange-900: #ffedd5;
+  --color-yellow-50: color-mix(in oklab, #eab308 13%, #0a1310);
+  --color-yellow-100: color-mix(in oklab, #eab308 21%, #0a1310);
+  --color-yellow-200: color-mix(in oklab, #eab308 32%, #0a1310);
+  --color-yellow-600: #facc15;
+  --color-yellow-700: #fde047;
+  --color-yellow-800: #fef08a;
+  --color-yellow-900: #fef9c3;
+  --color-green-50: color-mix(in oklab, #22c55e 13%, #0a1310);
+  --color-green-100: color-mix(in oklab, #22c55e 21%, #0a1310);
+  --color-green-200: color-mix(in oklab, #22c55e 32%, #0a1310);
+  --color-green-600: #4ade80;
+  --color-green-700: #86efac;
+  --color-green-800: #bbf7d0;
+  --color-green-900: #dcfce7;
+}
+
+
+.dark body {
+  background-color: #070d0b;
+  background-image:
+    radial-gradient(at 0% 0%, rgb(var(--brand-rgb) / 0.2) 0, transparent 45%),
+    radial-gradient(at 100% 0%, rgb(var(--accent-rgb) / 0.1) 0, transparent 40%),
+    radial-gradient(at 100% 100%, rgb(201 80 47 / 0.08) 0, transparent 45%);
+}
+.dark ::selection { background: rgb(var(--accent-rgb) / 0.35); }
+.dark * { scrollbar-color: #2f4a3c transparent; }
+
+.dark .card {
+  background-color: rgb(17 31 25 / 0.74);
+  border-color: rgb(255 255 255 / 0.07);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 32px -16px rgb(0 0 0 / 0.7);
+}
+.dark .lift:hover { box-shadow: 0 2px 4px rgb(0 0 0 / 0.4), 0 24px 44px -16px rgb(var(--brand-rgb) / 0.45); }
+.dark .glass { background-color: rgb(13 24 19 / 0.68); border-color: rgb(255 255 255 / 0.08); }
+.dark .input { background-color: rgb(255 255 255 / 0.045); border-color: rgb(255 255 255 / 0.12); box-shadow: none; }
+.dark .input:hover { border-color: rgb(255 255 255 / 0.22); }
+.dark .input:focus { background-color: rgb(255 255 255 / 0.07); border-color: #2fb286; }
+.dark .btn-secondary { background-color: rgb(255 255 255 / 0.05); border-color: rgb(255 255 255 / 0.11); box-shadow: none; }
+.dark .btn-secondary:hover { background-color: rgb(255 255 255 / 0.1); border-color: rgb(var(--brand-rgb) / 0.6); }
+.dark .skeleton { background: linear-gradient(100deg, #13231c 30%, #1c3329 50%, #13231c 70%); background-size: 300% 100%; }
+.dark .bg-white:not(.keep-white),
+.dark .bg-white\/90, .dark .bg-white\/80, .dark .bg-white\/70, .dark .bg-white\/50, .dark .bg-white\/40 {
+  background-color: rgb(24 44 35 / 0.85);
+}
+.dark .hover\:bg-white:hover, .dark .hover\:bg-white\/70:hover { background-color: rgb(255 255 255 / 0.08); }
+.dark .border-white\/60, .dark .border-white\/70, .dark .border-white\/80 { border-color: rgb(255 255 255 / 0.08); }
+.dark .ring-white { --tw-ring-color: #0a1310; }
+.dark .shadow-sm { --tw-shadow-color: rgb(0 0 0 / 0.35); }
+
+/* Buttons that stay light on purpose (on dark banners) keep dark text in dark mode too */
+.dark .keep-white { color: #0f5b48; background-color: #fffcf3; }
+.dark .keep-white:hover { background-color: #fff1c9; }
+
+/* Theme switch: circular reveal from the button (browsers with View Transitions) */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 2; }
